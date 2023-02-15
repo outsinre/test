@@ -1,2 +1,3 @@
 # test
-Test purpose only
+
+This repo serves as a test role to play with Git, Github, etc.
