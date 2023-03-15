@@ -7,3 +7,6 @@
 [submodule "newmodule"]
 	path = newmodule
 	url = git@github.com:Kong/kong-gql.git
+[submodule "testsubmod"]
+	path = testsubmod
+	url = git@github.com:outsinre/testsubmod.git
