@@ -43,7 +43,7 @@ jobs:
           */
 
           const payload = {
-            text: "${actor}, PR #pr.number - 'pr.title' was merged. Please cherry-pick to EE or label 'skip-cherry-pick'. View it here: pr.html_url.",
+            text: `${actor}, PR #pr.number - pr.title was merged. Please cherry-pick to EE or label 'skip-cherry-pick'. View it here: pr.html_url.`,
             channel: process.env.SLACK_CHANNEL,
           };
 
