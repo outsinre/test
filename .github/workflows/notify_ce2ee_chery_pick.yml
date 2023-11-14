@@ -34,14 +34,14 @@ jobs:
       with:
         script: |
           const pr = context.payload.pull_request;
-          const slack_mapping = JSON.parse(env.SLACK_MAPPING);
+          const slack_mapping = JSON.parse(process.env.SLACK_MAPPING);
           const actor_github_id = "${{ github.event.workflow_run.actor.login }}";
           const actor_slack_id = slack_mapping[actor_github_id];
           const actor = actor_slack_id ? `<@${actor_slack_id}>` : actor_github_id;
 
           const payload = {
             text: "${actor}, PR #pr.number - 'pr.title' was merged. Please cherry-pick to EE or label 'skip-cherry-pick'. View it here: pr.html_url.",
-            channel: "env.SLACK_CHANNEL",
+            channel: "process.env.SLACK_CHANNEL",
           };
 
           return JSON.stringify(payload);
