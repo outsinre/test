@@ -10,7 +10,7 @@ jobs:
   check_label:
     runs-on: ubuntu-latest
     outputs:
-      exists: ${{ steps.check.outputs.result }}
+      exists: ${{ steps.check.result }}
     steps:
     - id: check
       uses: actions/github-script@v6
