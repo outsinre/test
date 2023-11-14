@@ -35,7 +35,7 @@ jobs:
       with:
         script: |
           const pr = context.payload.pull_request;
-          const actor = "Jim";
+          /*const actor = "Jim";*/
           const pr_number = pr.number;
           const pr_title = pr.title;
           const pr_url = pr.html_url;
