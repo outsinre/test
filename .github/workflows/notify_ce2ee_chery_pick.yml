@@ -30,7 +30,7 @@ jobs:
       uses: actions/github-script@v6
       env:
         SLACK_CHANNEL: gateway-notifications
-        SLACK_MAPPING: { "a": "b" } # "${{ vars.GH_ID_2_SLACK_ID_MAPPING }}"
+        SLACK_MAPPING: "a, b, c" # "${{ vars.GH_ID_2_SLACK_ID_MAPPING }}"
       with:
         script: |
           const pr = context.payload.pull_request;
