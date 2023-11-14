@@ -18,6 +18,7 @@ jobs:
         script: |
           const labels = context.payload.pull_request.labels.map(l => l.name)
           console.log(labels)
+          console.log(labels.includes('skip-cherry-pick'))
           return labels.includes('skip-cherry-pick')
 
   notify_actor:
@@ -30,14 +31,16 @@ jobs:
       uses: actions/github-script@v6
       env:
         SLACK_CHANNEL: gateway-notifications
-        SLACK_MAPPING: "a, b, c" # "${{ vars.GH_ID_2_SLACK_ID_MAPPING }}"
+        SLACK_MAPPING: "${{ vars.GH_ID_2_SLACK_ID_MAPPING }}"
       with:
         script: |
           const pr = context.payload.pull_request;
+          /*
           const slack_mapping = JSON.parse(process.env.SLACK_MAPPING);
           const actor_github_id = "${{ github.event.workflow_run.actor.login }}";
           const actor_slack_id = slack_mapping[actor_github_id];
           const actor = actor_slack_id ? `<@${actor_slack_id}>` : actor_github_id;
+          */
 
           const payload = {
             text: "${actor}, PR #pr.number - 'pr.title' was merged. Please cherry-pick to EE or label 'skip-cherry-pick'. View it here: pr.html_url.",
