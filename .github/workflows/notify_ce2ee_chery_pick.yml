@@ -19,7 +19,7 @@ jobs:
 
   notify_actor:
     needs: check_label
-    if: ${{ github.event.pull_request.merged == true && needs.check_label.outputs.exists == false }}
+    if: ${{ needs.check_label.outputs.exists == false }}
     runs-on: ubuntu-latest
     steps:
     - name: Generate Slack Payload
