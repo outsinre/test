@@ -1,0 +1,12 @@
+[submodule "mymodule"]
+	path = mymodule
+	url = git@github.com:Kong/kong-openid-connect.git
+[submodule "kong-licensing"]
+	path = kong-licensing
+	url = git@github.com:Kong/kong-licensing.git
+[submodule "newmodule"]
+	path = newmodule
+	url = git@github.com:Kong/kong-gql.git
+[submodule "testsubmod"]
+	path = testsubmod
+	url = git@github.com:outsinre/testsubmod.git
