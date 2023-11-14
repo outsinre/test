@@ -1,5 +1,3 @@
 # test
 
-Test purpose only.
-
-1. test big file
+This repo serves as a test role to play with Git, Github, etc.
