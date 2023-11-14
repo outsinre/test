@@ -9,21 +9,17 @@ on:
 jobs:
   check_label:
     runs-on: ubuntu-latest
-    outputs:
-      exists: ${{ steps.check.outputs.result }}
     steps:
     - id: check
       uses: actions/github-script@v6
       with:
         script: |
           const labels = context.payload.pull_request.labels.map(l => l.name)
-          console.log(labels)
-          console.log(labels.includes('skip-cherry-pick'))
-          return labels.includes('skip-cherry-pick')
+          core.setOutput('exists', labels.includes('skip-cherry-pick'))
 
   notify_actor:
     needs: check_label
-    # if: ${{ github.event.pull_request.merged == true && needs.check_label.steps.check.result == 'false' }}
+    if: ${{ github.event.pull_request.merged == true && needs.check_label.outputs.exists == false }}
     runs-on: ubuntu-latest
     steps:
     - name: Generate Slack Payload
