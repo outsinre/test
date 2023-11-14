@@ -17,11 +17,11 @@ jobs:
       with:
         script: |
           const labels = context.payload.pull_request.labels.map(l => l.name);
-          return labels.includes('skip-cherry-pick')
+          return labels.includes('skip-cherry-pick');
 
   notify_actor:
     needs: check_label
-    if: ${{ needs.check_label.outputs.exists == false }} # github.event.pull_request.merged == true &&
+    if: ${{ github.event.pull_request.merged == true && needs.check_label.outputs.exists == false }}
     runs-on: ubuntu-latest
     steps:
     - name: Generate Slack Payload
