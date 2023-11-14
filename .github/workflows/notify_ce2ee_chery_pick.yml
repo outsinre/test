@@ -35,7 +35,7 @@ jobs:
       with:
         script: |
           const pr = context.payload.pull_request;
-          /*const actor = "Jim";*/
+          const actor = "Jim";
           const pr_number = pr.number;
           const pr_title = pr.title;
           const pr_url = pr.html_url;
@@ -47,7 +47,7 @@ jobs:
           */
 
           const payload = {
-            text: `${{actor}}, PR #${{pr_number}} - ${{pr_title}} was merged. Please cherry-pick to EE or label 'skip-cherry-pick'. View it here: ${{pr_url}}.`,
+            text: `${actor}, PR #${pr_number} - ${pr_title} was merged. Please cherry-pick to EE or label 'skip-cherry-pick'. View it here: ${pr_url}.`,
             channel: process.env.SLACK_CHANNEL,
           };
 
