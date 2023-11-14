@@ -10,7 +10,7 @@ jobs:
   check_label:
     runs-on: ubuntu-latest
     outputs:
-      exists: ${{ steps.check.result }}
+      exists: ${{ steps.check.outputs.result }}
     steps:
     - id: check
       uses: actions/github-script@v6
@@ -21,7 +21,7 @@ jobs:
 
   notify_actor:
     needs: check_label
-    if: ${{ github.event.pull_request.merged == true && needs.check_label.outputs.exists == false }}
+    if: ${{ needs.check_label.outputs.exists == false }} # github.event.pull_request.merged == true &&
     runs-on: ubuntu-latest
     steps:
     - name: Generate Slack Payload
