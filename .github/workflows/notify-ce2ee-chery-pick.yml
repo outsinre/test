@@ -47,8 +47,8 @@ jobs:
         result-encoding: string
 
     - name: Send Slack Message
-        uses: slackapi/slack-github-action@e28cf165c92ffef168d23c5c9000cffc8a25e117 # v1.24.0
-        with:
-          payload: ${{ steps.gen_slack_payload.outputs.result }}
-        env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_GATEWAY_NOTIFICATIONS_WEBHOOK }}
+      uses: slackapi/slack-github-action@e28cf165c92ffef168d23c5c9000cffc8a25e117 # v1.24.0
+      with:
+        payload: ${{ steps.gen_slack_payload.outputs.result }}
+      env:
+        SLACK_WEBHOOK_URL: ${{ secrets.SLACK_GATEWAY_NOTIFICATIONS_WEBHOOK }}
