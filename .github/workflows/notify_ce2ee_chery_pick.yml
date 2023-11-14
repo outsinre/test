@@ -30,7 +30,7 @@ jobs:
       uses: actions/github-script@v6
       env:
         SLACK_CHANNEL: gateway-notifications
-        SLACK_MAPPING: "${{ vars.GH_ID_2_SLACK_ID_MAPPING }}"
+        SLACK_MAPPING: { "a": "b" } # "${{ vars.GH_ID_2_SLACK_ID_MAPPING }}"
       with:
         script: |
           const pr = context.payload.pull_request;
@@ -41,7 +41,7 @@ jobs:
 
           const payload = {
             text: "${actor}, PR #pr.number - 'pr.title' was merged. Please cherry-pick to EE or label 'skip-cherry-pick'. View it here: pr.html_url.",
-            channel: "process.env.SLACK_CHANNEL",
+            channel: process.env.SLACK_CHANNEL,
           };
 
           return JSON.stringify(payload);
