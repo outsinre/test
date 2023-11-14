@@ -35,7 +35,10 @@ jobs:
       with:
         script: |
           const pr = context.payload.pull_request;
-          const actor = "jim";
+          const actor = "Jim";
+          const pr_number = pr.number;
+          const pr_title = pr.title;
+          const pr_url = pr.html_url;
           /*
           const slack_mapping = JSON.parse(process.env.SLACK_MAPPING);
           const actor_github_id = "${{ github.event.workflow_run.actor.login }}";
@@ -44,7 +47,7 @@ jobs:
           */
 
           const payload = {
-            text: `${actor}, PR #pr.number - pr.title was merged. Please cherry-pick to EE or label 'skip-cherry-pick'. View it here: pr.html_url.`,
+            text: `${{actor}}, PR #${{pr_number}} - ${{pr_title}} was merged. Please cherry-pick to EE or label 'skip-cherry-pick'. View it here: ${{pr_url}}.`,
             channel: process.env.SLACK_CHANNEL,
           };
 
