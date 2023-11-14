@@ -9,13 +9,16 @@ on:
 jobs:
   check_label:
     runs-on: ubuntu-latest
+    outputs:
+      exists: ${{ steps.check.result }}
     steps:
     - id: check
       uses: actions/github-script@v6
       with:
         script: |
-          const labels = context.payload.pull_request.labels.map(l => l.name)
-          core.setOutput('exists', labels.includes('skip-cherry-pick'))
+          const labels = context.payload.pull_request.labels.map(l => l.name);
+          /* core.setOutput('exists', labels.includes('skip-cherry-pick')); */
+          return labels.includes('skip-cherry-pick')
 
   notify_actor:
     needs: check_label
