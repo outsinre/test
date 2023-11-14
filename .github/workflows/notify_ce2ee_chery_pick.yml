@@ -55,4 +55,4 @@ jobs:
       with:
         payload: ${{ steps.gen_slack_payload.outputs.result }}
       env:
-        SLACK_WEBHOOK_URL: ${{ secrets.SLACK_GATEWAY_NOTIFICATIONS_WEBHOOK }}
+        SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
