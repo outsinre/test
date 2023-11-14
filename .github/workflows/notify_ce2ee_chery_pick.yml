@@ -35,6 +35,7 @@ jobs:
       with:
         script: |
           const pr = context.payload.pull_request;
+          const actor = "jim";
           /*
           const slack_mapping = JSON.parse(process.env.SLACK_MAPPING);
           const actor_github_id = "${{ github.event.workflow_run.actor.login }}";
