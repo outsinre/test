@@ -1,3 +1,3 @@
 # test
 
-This repo serves as a test role to play with Git, Github, etc.
+This repo serves as a test role to play with Git, Github, GitHub API, etc.
