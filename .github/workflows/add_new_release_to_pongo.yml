@@ -5,9 +5,7 @@ on:
     types: [published]
   push:
     tags:
-    # CE
     - '[1-9]+.[0-9]+.[0-9]+'
-    # EE
     - '[1-9]+.[0-9]+.[0-9]+.[0-9]+'
 
 jobs:
@@ -17,6 +15,9 @@ jobs:
     - name: Checkout Kong Repo
       id: checkout_kong_repo
       uses: actions/checkout@v4
+      with:
+        # token: ${{ secrets.GHA_KONG_BOT_READ_TOKEN }}
+        path: master
     - name: Checkout Pongo Repo
       id: checkout_pongo_repo
       uses: actions/checkout@v4
@@ -24,12 +25,12 @@ jobs:
         repository: kong/kong-pongo
         ref: master
         path: kong-pongo
-        # Pongo is a public repo, secret is optional
-        # token: ${{ secrets.GHA_KONG_BOT_READ_TOKEN }}
     - name: Create Pongo PR
       id: create_pongo_pr
       env:
         # Required by Pongo 'assets/update_versions.sh' to clone 'kong/kong' or 'kong/kong-ee'
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
+        echo "github.ref = ${{ github.ref }}"
+        echo "github.event.release.tag_name = ${{ github.event.release.tag_name }}"
         ls -lrta "$PWD"
