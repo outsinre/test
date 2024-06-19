@@ -48,7 +48,7 @@ jobs:
 
         # create branch
         cd kong-pongo
-        git checkout -b "add-version-${{ github.event.release.tag_name }}"
+        git checkout -b "add-${CODE_BASE,,}-version-${{ github.event.release.tag_name }}"
         git status -sb
 
         # update version
