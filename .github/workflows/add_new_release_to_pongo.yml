@@ -22,7 +22,7 @@ jobs:
         ref: master
         path: kong-pongo-test
         # Pongo is a public repo, secret is optional
-        token: ${{ secrets.GHA_KONG_BOT_READ_TOKEN }}
+        # token: ${{ secrets.GHA_KONG_BOT_READ_TOKEN }}
     - name: Create Pongo PR
       id: create_pongo_pr
       env:
