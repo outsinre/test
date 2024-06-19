@@ -17,10 +17,6 @@ jobs:
     - name: Checkout Kong Repo
       id: checkout_kong_repo
       uses: actions/checkout@v4
-      with:
-        path: main
-        # Pongo is a public repo, secret is optional
-        # token: ${{ secrets.GHA_KONG_BOT_READ_TOKEN }}
     - name: Checkout Pongo Repo
       id: checkout_pongo_repo
       uses: actions/checkout@v4
