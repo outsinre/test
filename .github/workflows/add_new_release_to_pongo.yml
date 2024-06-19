@@ -5,8 +5,13 @@ on:
     types: [published]
   push:
     tags:
+    # CE
     - '[1-9]+.[0-9]+.[0-9]+'
+    # EE
     - '[1-9]+.[0-9]+.[0-9]+.[0-9]+'
+
+env:
+  CODE_BASE: EE
 
 jobs:
   add_release_to_pongo:
@@ -35,12 +40,14 @@ jobs:
         echo "github.ref = ${{ github.ref }}"
         echo "github.event.release.tag_name = ${{ github.event.release.tag_name }}"
         ls -lrta "$PWD"
+        cd kong; git status -sb; cd ..
 
-        cd kong; git status; cd ..
-        cd kong-pongo; git status
+        # create branch
+        cd kong-pongo
+        git checkout -b "add-version-${{ github.event.release.tag_name }}"
+        git status -sb
 
         # update version
-        CODE_BASE="EE"
         VERSIONS_FILE="assets/kong_${CODE_BASE}_versions.ver"
         if [[ ! -f $VERSIONS_FILE ]]; then
           echo "Versions file '$VERSIONS_FILE' not found"
@@ -49,5 +56,7 @@ jobs:
         echo "${{ github.event.release.tag_name }}" >> "$VERSIONS_FILE"
         sort --version-sort -o "$VERSIONS_FILE" "$VERSIONS_FILE"
         git diff
-
+        git add "$VERSIONS_FILE"
+        git commit -m "feat(version): add Kong ${CODE_BASE} version $ADD_VERSION"
+        git status
         # update artifacts
