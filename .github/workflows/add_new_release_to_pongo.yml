@@ -42,6 +42,10 @@ jobs:
         ls -lrta "$PWD"
         cd kong; git status -sb; cd ..
 
+        # git config
+        git config --global user.email "ci-bot@konghq.com"
+        git config --global user.name "CI Bot"
+
         # create branch
         cd kong-pongo
         git checkout -b "add-version-${{ github.event.release.tag_name }}"
