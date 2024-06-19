@@ -27,4 +27,4 @@ jobs:
         # Required by Pongo 'assets/update_versions.sh' to clone 'kong/kong' or 'kong/kong-ee'
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
-        echo $PWD
+        echo "$PWD"
