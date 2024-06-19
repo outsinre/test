@@ -1,6 +1,8 @@
 name: Add New Release to Pongo
 
 on:
+  release:
+    types: [published]
   push:
     tags:
     # CE
