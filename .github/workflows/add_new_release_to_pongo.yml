@@ -9,7 +9,7 @@ on:
     - '[1-9]+.[0-9]+.[0-9]+.[0-9]+'
 
 jobs:
-  add_to_pongo:
+  add_release_to_pongo:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout Kong Repo
@@ -17,7 +17,8 @@ jobs:
       uses: actions/checkout@v4
       with:
         # token: ${{ secrets.GHA_KONG_BOT_READ_TOKEN }}
-        path: master
+        ref: ${{ github.event.release.tag_name }}
+        path: kong
     - name: Checkout Pongo Repo
       id: checkout_pongo_repo
       uses: actions/checkout@v4
@@ -34,3 +35,19 @@ jobs:
         echo "github.ref = ${{ github.ref }}"
         echo "github.event.release.tag_name = ${{ github.event.release.tag_name }}"
         ls -lrta "$PWD"
+
+        cd kong; git status; cd ..
+        cd kong-pongo; git status
+
+        # update version
+        CODE_BASE="EE"
+        VERSIONS_FILE="assets/kong_${CODE_BASE}_versions.ver"
+        if [[ ! -f $VERSIONS_FILE ]]; then
+          echo "Versions file '$VERSIONS_FILE' not found"
+          exit 1
+        fi
+        echo "${{ github.event.release.tag_name }}" >> "$VERSIONS_FILE"
+        sort --version-sort -o "$VERSIONS_FILE" "$VERSIONS_FILE"
+        git diff
+
+        # update artifacts
