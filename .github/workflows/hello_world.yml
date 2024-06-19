@@ -4,7 +4,7 @@ name: Hello World on Release
 
 on:
   release:
-    types: [published,released]
+    types: [published]
 
 jobs:
 
