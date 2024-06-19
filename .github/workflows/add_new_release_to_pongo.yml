@@ -14,13 +14,20 @@ jobs:
   add_to_pongo:
     runs-on: ubuntu-latest
     steps:
+    - name: Checkout Kong Repo
+      id: checkout_kong_repo
+      uses: actions/checkout@v4
+      with:
+        path: main
+        # Pongo is a public repo, secret is optional
+        # token: ${{ secrets.GHA_KONG_BOT_READ_TOKEN }}
     - name: Checkout Pongo Repo
       id: checkout_pongo_repo
       uses: actions/checkout@v4
       with:
         repository: kong/kong-pongo
         ref: master
-        path: kong-pongo-test
+        path: kong-pongo
         # Pongo is a public repo, secret is optional
         # token: ${{ secrets.GHA_KONG_BOT_READ_TOKEN }}
     - name: Create Pongo PR
@@ -29,4 +36,4 @@ jobs:
         # Required by Pongo 'assets/update_versions.sh' to clone 'kong/kong' or 'kong/kong-ee'
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
-        ls -l /home/runner/work/
+        ls -lrta "$PWD"
