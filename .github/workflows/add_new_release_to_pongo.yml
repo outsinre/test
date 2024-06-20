@@ -83,7 +83,7 @@ jobs:
         git add "$VERSIONS_FILE"
         git commit -m "feat(version): add Kong ${CODE_BASE} version $ADD_VERSION"
         git status
-    - name: Checkout Kong ${CODE_BASE}
+    - name: Checkout Kong ${{ env.CODE_BASE}}
       id: checkout_kong
       uses: actions/checkout@v4
       with:
