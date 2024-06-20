@@ -1,3 +1,6 @@
+# 1. runs-on
+# 2. CE EE
+
 name: Add New Release to Pongo
 
 on:
@@ -14,15 +17,35 @@ env:
   CODE_BASE: EE
 
 jobs:
+  get_tag:
+    runs-on: ubuntu-latest
+    outputs:
+      tag_version: ${{ step.set_tag.outputs.TAG_NAME }}
+    steps:
+    - name: Set Release Tag
+      id: set_tag
+      shell: bash
+      run: |
+        echo "github.event.name = ${{ github.event_name }}"
+        echo "github.ref = ${{ github.ref }}"
+        echo "github.ref_name = ${{ github.ref_name }}"
+        echo "github.event.release.tag_name = ${{ github.event.release.tag_name }}"
+
+        if [[ "${{ github.event_name }}" == "push" ]] ; then
+          echo "TAG_NAME=${{ github.ref_name }}" >> "$GITHUB_OUTPUT"
+        elif [[ "${{ github.event_name }}" == "release" ]] ; then
+          echo "TAG_NAME=${{ github.event.release.tag_name }}" >> "$GITHUB_OUTPUT"
+        fi
   add_release_to_pongo:
     runs-on: ubuntu-latest
+    needs: get_tag
     steps:
     - name: Checkout Kong Repo
       id: checkout_kong_repo
       uses: actions/checkout@v4
       with:
         # token: ${{ secrets.GHA_KONG_BOT_READ_TOKEN }}
-        ref: ${{ github.event.release.tag_name }}
+        ref: ${{ needs.get_tag.outputs.tag_version }}
         path: kong
     - name: Checkout Pongo Repo
       id: checkout_pongo_repo
@@ -35,12 +58,12 @@ jobs:
       id: create_pongo_pr
       env:
         # Required by Pongo 'assets/update_versions.sh' to clone 'kong/kong' or 'kong/kong-ee'
+        # GITHUB_TOKEN: ${{ secrets.PAT }}
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      shell: bash
       run: |
-        echo "github.ref = ${{ github.ref }}"
-        echo "github.event.release.tag_name = ${{ github.event.release.tag_name }}"
         ls -lrta "$PWD"
-        cd kong; git status -sb; cd ..
+        cd kong; git status; cd ..
 
         # git config
         git config --global user.email "ci-bot@konghq.com"
@@ -48,8 +71,8 @@ jobs:
 
         # create branch
         cd kong-pongo
-        git checkout -b "add-${CODE_BASE,,}-version-${{ github.event.release.tag_name }}"
-        git status -sb
+        git checkout -b "add-${CODE_BASE,,}-version-${{ needs.get_tag.outputs.tag_version }}"
+        git status
 
         # update version
         VERSIONS_FILE="assets/kong_${CODE_BASE}_versions.ver"
@@ -57,10 +80,11 @@ jobs:
           echo "Versions file '$VERSIONS_FILE' not found"
           exit 1
         fi
-        echo "${{ github.event.release.tag_name }}" >> "$VERSIONS_FILE"
+        echo "${{ needs.get_tag.outputs.tag_version }}" >> "$VERSIONS_FILE"
         sort --version-sort -o "$VERSIONS_FILE" "$VERSIONS_FILE"
         git diff
         git add "$VERSIONS_FILE"
         git commit -m "feat(version): add Kong ${CODE_BASE} version $ADD_VERSION"
         git status
+
         # update artifacts
