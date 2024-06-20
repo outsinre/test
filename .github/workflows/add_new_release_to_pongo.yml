@@ -64,7 +64,6 @@ jobs:
       run: |
         ls "$PWD" ; git status
 
-        git config --global --list
         git config --global user.email "ci-bot@konghq.com"
         git config --global user.name "CI Bot"
         git config --global --list
